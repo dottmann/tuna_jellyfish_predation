@@ -4,6 +4,7 @@
 
 # Author: Daniel Ottmann
 # Created on: February 2021
+# Last update: May 2021
 
 ###################################################################################################
 #       Readme
@@ -14,15 +15,20 @@
 ###################################################################################################
 
 
-########################
-# Set working directory:
-setwd("...")
+##################################################################
+# Clear environment:
+rm(list = ls())
 
 # Load R libraries
 library(tidyverse)
 library(maps)
 library(maptools)
 library(raster)
+
+
+#################################################################
+# Load lat lon data of the sampling stations:
+load("data/data_station_positions.RData")
 
 
 #############################################
@@ -75,45 +81,38 @@ scaleBar <- function(lon, lat, distanceLon, distanceLat, distanceLegend, dist.un
 }
 
 
-
-#################################################################
-# Load lat lon data of the sampling stations:
-df <- read.delim('station_positions.txt', sep = '\t', header = T, stringsAsFactors = F)
-
-
 ###########################################
 # Download map data from GADM:
-coastline <-  getData("GADM", country = "ESP", level = 0)
-morocco <-  getData("GADM",country = "MAR",level = 0)
-algeria <-  getData("GADM",country = "DZA",level = 0)
-france <-  getData("GADM",country = "FRA",level = 0)
-portugal <-  getData("GADM",country = "PRT",level = 0)
-tunisia <-  getData("GADM",country = "TUN",level = 0)
-italy <-  getData("GADM",country = "ITA",level = 0)
-germany <-  getData("GADM",country = "DEU",level = 0)
-swizerland <-  getData("GADM",country = "CHE",level = 0)
-libya <-  getData("GADM",country = "LBY",level = 0)
-poland <-  getData("GADM",country = "POL",level = 0)
-austria <-  getData("GADM",country = "AUT",level = 0)
-belgium <-  getData("GADM",country = "BEL",level = 0)
-luxembourg <-  getData("GADM",country = "LUX",level = 0)
-uk <-  getData("GADM",country = "GBR",level = 0)
-slovenia <-  getData("GADM",country = "svn",level = 0)
-croatia <-  getData("GADM",country = "HRV",level = 0)
-netherlands <-  getData("GADM",country = "NLD",level = 0)
-andorra <-  getData("GADM",country = "AND",level = 0)
-denmark <-  getData("GADM",country = "DNK",level = 0)
-sweeden <-  getData("GADM",country = "SWE",level = 0) 
-czeck <-  getData("GADM",country = "CZE",level = 0)
-slovakia <-  getData("GADM",country = "SVK",level = 0)
-bosnia <-  getData("GADM",country = "BIH",level = 0)
-albania <-  getData("GADM",country = "ALB",level = 0)
-greece <-  getData("GADM",country = "GRC",level = 0)
-serbia <-  getData("GADM",country = "SRB",level = 0)
-montenegro <-  getData("GADM",country = "MNE",level = 0)
-hungary <-  getData("GADM",country = "HUN",level = 0)
-ireland <-  getData("GADM",country = "IRL",level = 0)
-
+spain <-  getData(path = "data/gdm", "GADM", country = "ESP", level = 0)
+morocco <-  getData(path = "data/gdm", "GADM",country = "MAR",level = 0)
+algeria <-  getData(path = "data/gdm", "GADM",country = "DZA",level = 0)
+france <-  getData(path = "data/gdm", "GADM",country = "FRA",level = 0)
+portugal <-  getData(path = "data/gdm", "GADM",country = "PRT",level = 0)
+tunisia <-  getData(path = "data/gdm", "GADM",country = "TUN",level = 0)
+italy <-  getData(path = "data/gdm", "GADM",country = "ITA",level = 0)
+germany <-  getData(path = "data/gdm", "GADM",country = "DEU",level = 0)
+swizerland <-  getData(path = "data/gdm", "GADM",country = "CHE",level = 0)
+libya <-  getData(path = "data/gdm", "GADM",country = "LBY",level = 0)
+poland <-  getData(path = "data/gdm", "GADM",country = "POL",level = 0)
+austria <-  getData(path = "data/gdm", "GADM",country = "AUT",level = 0)
+belgium <-  getData(path = "data/gdm", "GADM",country = "BEL",level = 0)
+luxembourg <-  getData(path = "data/gdm", "GADM",country = "LUX",level = 0)
+uk <-  getData(path = "data/gdm", "GADM",country = "GBR",level = 0)
+slovenia <-  getData(path = "data/gdm", "GADM",country = "svn",level = 0)
+croatia <-  getData(path = "data/gdm", "GADM",country = "HRV",level = 0)
+netherlands <-  getData(path = "data/gdm", "GADM",country = "NLD",level = 0)
+andorra <-  getData(path = "data/gdm", "GADM",country = "AND",level = 0)
+denmark <-  getData(path = "data/gdm", "GADM",country = "DNK",level = 0)
+sweeden <-  getData(path = "data/gdm", "GADM",country = "SWE",level = 0) 
+czeck <-  getData(path = "data/gdm", "GADM",country = "CZE",level = 0)
+slovakia <-  getData(path = "data/gdm", "GADM",country = "SVK",level = 0)
+bosnia <-  getData(path = "data/gdm", "GADM",country = "BIH",level = 0)
+albania <-  getData(path = "data/gdm", "GADM",country = "ALB",level = 0)
+greece <-  getData(path = "data/gdm", "GADM",country = "GRC",level = 0)
+serbia <-  getData(path = "data/gdm", "GADM",country = "SRB",level = 0)
+montenegro <-  getData(path = "data/gdm", "GADM",country = "MNE",level = 0)
+hungary <-  getData(path = "data/gdm", "GADM",country = "HUN",level = 0)
+ireland <-  getData(path = "data/gdm", "GADM",country = "IRL",level = 0)
 
 
 ##############################################################
@@ -126,7 +125,7 @@ ylim1 <- c(37.8, 40.4)
 
 p <- ggplot() +
   geom_point(data = df, aes(lon, lat), size = 1.5) +
-  geom_polygon(data = coastline, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey") +
+  geom_polygon(data = spain, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey") +
   coord_equal(xlim = xlim1, ylim = ylim1) +
   labs(x = "Longitude", y = "Latitude") +
   
@@ -138,7 +137,9 @@ p <- ggplot() +
   theme_bw() +
   theme(panel.grid = element_blank())
 
+png(filename = "plots/sampling_sites.png", width = 10, height = 7, units = "cm", res = 400)
 p
+dev.off()
 
 
 
@@ -153,7 +154,7 @@ ylim2 <- c(35, 50)
 
 p <- ggplot() +
   
-  geom_polygon(data = coastline, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey", size = .2) +
+  geom_polygon(data = spain, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey", size = .2) +
   geom_polygon(data = morocco, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey", size = .2) +
   geom_polygon(data = algeria, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey", size = .2) +
   geom_polygon(data = france, aes(x = long, y = lat, group = group), fill = "light grey", colour = "dark grey", size = .2) +
@@ -193,7 +194,9 @@ p <- ggplot() +
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
+png(filename = "plots/western_mediterranean.png", width = 8, height = 5, units = "cm", res = 600)
 p
+dev.off()
 
 #           END OF SCRIPT
 #####################################

@@ -1,26 +1,22 @@
 
-#-----------------------------------------------------------------------
-#-- Survival of early life stages of tuna to predation by metaephyrae --
-#-----------------------------------------------------------------------
+#--------------------------------------------
+#-- Predation of metaephyrae on tuna larvae--
+#--------------------------------------------
 
 # Author: Daniel Ottmann
 # Created on: February 2021
+# Last update: May 2021
 
 ###################################################################################################
 #       Readme
 
 # Paper title: Spawning site selection of a migratory tuna reduces jellyfish predation on early life stages
-# This script is designed to 
+# This script is designed to:
 # 1.- Simulate tuna egg and larval survival to metaephyrae in relation to temperature-dependent development time
 # 2.- Evaluate tuna egg and larval survival based on field data of water temperature and ephyrae and larval densities
 
 ###################################################################################################
 
-
-###################################################################################################
-# Set working directory:
-setwd("...") 
-setwd("C:/Users/danie/Google Drive/_phd/Projects/predation_rates/clean_code/")
 
 ##################################################################
 # Clear environment:
@@ -34,7 +30,8 @@ library(cowplot)
 
 ##################################################################################################
 # Load field data:
-df <- read.delim('predator_prey_data.txt', sep = '\t', header = T, stringsAsFactors = F)
+df <- read.delim('data/txt/data_metaephyrae_tuna.txt', sep = '\t', header = T, stringsAsFactors = F)
+save(df, file = "data/data_metaephyrae_tuna.RData")
 
 
 ##################################################################################################
@@ -58,13 +55,15 @@ df <- df %>%
 p1 <- ggplot() + 
   geom_histogram(data = subset(df, tthynnus_preflex_dens > 0), aes(tthynnus_preflex_dens), color = "black", fill = "white", bins = 60, boundary = 0) +
   labs(x = expression(italic("T. thynnus "), "m"^-3*""), y = "Frequency (zeros excluded)") +
-  theme_bw() 
+  theme_bw() +
+  theme(panel.grid = element_blank())
 
 # Metaephyrae:
 p2 <- ggplot() + 
   geom_histogram(data = subset(df, metaephyrae_dens > 0), aes(metaephyrae_dens), color = "black", fill = "white",  bins = 60, boundary = 0) +
   labs(x = expression(italic("P. noctiluca"), "m"^-3*""), y = "Frequency (zeros excluded)") +
-  theme_bw() 
+  theme_bw()  +
+  theme(panel.grid = element_blank())
 
 # Plot it out:
 png(filename = "plots/frequency_plots.png", width = 12, height = 8, units = "cm", res = 300)
@@ -78,7 +77,7 @@ dev.off()
 hr <- 24
 
 # Clearance rate (Gordoa et al 2013):
-cr_23 <- .00414 # m^3 ind^-1 h^-1 at 23ºC
+cr_23 <- .00414 # m^3 ind^-1 h^-1 at 23?C
 q10_cr <- 2.8 # Hansen Hansen et al 1997
 
 # Set range of temperatures:
@@ -156,11 +155,12 @@ df2 %>%
 p <- ggplot() + 
   geom_histogram(data = df, aes(x = temperature), binwidth = .5, alpha = .5) +
   geom_line(data = df2, aes(x = temperature, y = egg_survival * 80, colour = as.factor(metaephyrae))) +
-  labs(x = "Temperature ºC", y = "Temperature frequency") +
+  labs(x = "Temperature ?C", y = "Temperature frequency") +
   scale_color_discrete(name = expression("Metaephyrae m"^-3*"")) +
   scale_x_continuous(breaks = c(21, 24, 27, 30)) +
   scale_y_continuous(sec.axis = sec_axis(~./80, name = "Probability of egg survival")) +
-  theme_bw()
+  theme_bw()  +
+  theme(panel.grid = element_blank())
 
 png(filename = "plots/egg_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
 p
@@ -171,11 +171,12 @@ dev.off()
 p <- ggplot() + 
   geom_histogram(data = df, aes(x = temperature), binwidth = .5, alpha = .5) +
   geom_line(aes(x = temperature, y = cumul_survival * 80, colour = as.factor(metaephyrae)), data = df2) +
-  labs(x = "Temperature ºC", y = "Temperature frequency") +
+  labs(x = "Temperature ?C", y = "Temperature frequency") +
   scale_color_discrete(name = expression("Metaephyrae m"^-3*"")) +
   scale_x_continuous(breaks = c(21, 24, 27, 30)) +
   scale_y_continuous(sec.axis = sec_axis(~./80, name = "Probability of survival to flexion")) +
-  theme_bw()
+  theme_bw()  +
+  theme(panel.grid = element_blank())
 
 png(filename = "plots/larval_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
 p
@@ -254,7 +255,7 @@ t.test(log(subset(df, spawning_site == 1)$metaephyrae_dens + 1),
 
 
 # Plot the density distribution of tuna larvae relative to predatory pressure:
-# Egg development time (h) at 24ºC
+# Egg development time (h) at 24?C
 dt24 <- (8787.5 * 24^-1.701)
 
 # Probability of surviving the egg development time:
@@ -276,7 +277,7 @@ p <- ggplot() +
   
   scale_y_continuous(breaks = c(-3, -2, -1, 0, 1), 
                      label = (c("0.001", "0.01", "0.1", "1", "10")),
-                     sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24ºC", breaks = c(0,.5, 1))) +
+                     sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24?C", breaks = c(0,.5, 1))) +
   
   scale_x_continuous(breaks = c(-4, -3, -2, -1, 0, 1), 
                      label = (c("0.0001", "0.001", "0.01", "0.1", "1", "10"))) +
@@ -287,7 +288,8 @@ p <- ggplot() +
   
   theme_bw() +
   
-  theme(axis.title.y.right = element_text(color = "red"),
+  theme(panel.grid = element_blank(),
+        axis.title.y.right = element_text(color = "red"),
         axis.text.y.right = element_text(color = "red"),
         axis.text.x = element_text(angle = 30, vjust = 1, hjust = 0.8),
         legend.position = "none") +
@@ -299,36 +301,36 @@ p
 dev.off()
 
 
-# Plot it with metaephyrae density in the x-axis:
-p <- ggplot() +
-  geom_point(data = df, aes(y = log10(tthynnus_preflex_dens), x = log10(metaephyrae_dens)), alpha = 0) +
-
-    geom_line(data = df, aes(x = log10(erd), y = (p_survival24_C - 6/8) * 4), color = "red", linetype = "dashed", alpha = 0) +
-  
-  scale_y_continuous(breaks = c(1), 
-                     label = (c("1")),
-                     sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24ºC", breaks = c(0,.5, 1))) +
-  
-  scale_x_continuous(breaks = c(-3, -2, -1, -0, 1), 
-                     label = (c("0.001", "0.01", "0.1", "1", "10"))) +
-  
-  annotation_logticks(sides = "b") +
-  
-  labs(x = expression(paste(italic("P. noctiluca "), "density (metaephyrae m"^-3*")")), y = expression(paste(italic("T. thynnus "), "density (larvae m"^-3*")"))) +
-  
-  theme_bw() +
-  
-  theme(axis.title.y.right = element_text(color = "red"),
-        axis.text.y.right = element_text(color = "red"),
-        axis.text.x = element_text(angle = 30, vjust = 1, hjust = 0.8),
-        legend.position = "none",
-        panel.grid = element_blank()) +
-  
-  facet_wrap(~year) 
-
-png(filename = "plots/prey_abundance_vs_metaephyrae_density.png", width = 15, height = 10, units = "cm", res = 400)
-p
-dev.off()
+# # Plot second x-axis:
+# p <- ggplot() +
+#   geom_point(data = df, aes(y = log10(tthynnus_preflex_dens), x = log10(metaephyrae_dens)), alpha = 0) +
+# 
+#     geom_line(data = df, aes(x = log10(erd), y = (p_survival24_C - 6/8) * 4), color = "red", linetype = "dashed", alpha = 0) +
+#   
+#   scale_y_continuous(breaks = c(1), 
+#                      label = (c("1")),
+#                      sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24?C", breaks = c(0,.5, 1))) +
+#   
+#   scale_x_continuous(breaks = c(-3, -2, -1, -0, 1), 
+#                      label = (c("0.001", "0.01", "0.1", "1", "10"))) +
+#   
+#   annotation_logticks(sides = "b") +
+#   
+#   labs(x = expression(paste(italic("P. noctiluca "), "density (metaephyrae m"^-3*")")), y = expression(paste(italic("T. thynnus "), "density (larvae m"^-3*")"))) +
+#   
+#   theme_bw() +
+#   
+#   theme(axis.title.y.right = element_text(color = "red"),
+#         axis.text.y.right = element_text(color = "red"),
+#         axis.text.x = element_text(angle = 30, vjust = 1, hjust = 0.8),
+#         legend.position = "none",
+#         panel.grid = element_blank()) +
+#   
+#   facet_wrap(~year) 
+# 
+# png(filename = "plots/prey_abundance_vs_metaephyrae_density.png", width = 15, height = 10, units = "cm", res = 400)
+# p
+# dev.off()
 
 #           END OF SCRIPT
 #########################################
