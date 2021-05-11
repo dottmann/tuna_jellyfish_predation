@@ -1,7 +1,7 @@
 
-#--------------------------------------------
-#-- Predation of metaephyrae on tuna larvae--
-#--------------------------------------------
+#---------------------------------------------
+#-- Predation of metaephyrae on tuna larvae --
+#---------------------------------------------
 
 # Author: Daniel Ottmann
 # Created on: February 2021
