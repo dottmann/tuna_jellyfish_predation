@@ -5,7 +5,7 @@
 
 # Author: Daniel Ottmann
 # Created on: February 2021
-# Last update: May 2021
+# Last update: June 2021
 
 ###################################################################################################
 #       Readme
@@ -21,6 +21,10 @@
 ##################################################################
 # Clear environment:
 rm(list = ls())
+
+# Plot commands:
+outfile_plots <- F
+fig5_2ndaxis <- F
 
 ##########################
 # Load packagges:
@@ -66,9 +70,13 @@ p2 <- ggplot() +
   theme(panel.grid = element_blank())
 
 # Plot it out:
-png(filename = "plots/frequency_plots.png", width = 12, height = 8, units = "cm", res = 300)
-plot_grid(p1, p2,labels = "auto")
-dev.off()
+if (outfile_plots == T) {
+  png(filename = "plots/frequency_plots.png", width = 12, height = 8, units = "cm", res = 300)
+  print(plot_grid(p1, p2, labels = "auto"))
+  dev.off()
+} else {
+  plot_grid(p1, p2, labels = "auto")
+}
 
 ####################################################################################################################
 # Simulating functional response of survival as a function of temperature-dependent egg and larval development time:
@@ -162,10 +170,13 @@ p <- ggplot() +
   theme_bw()  +
   theme(panel.grid = element_blank())
 
-png(filename = "plots/egg_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
-p
-dev.off()
-
+if (outfile_plots == T) {
+  png(filename = "plots/egg_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
+  print(p)
+  dev.off()
+} else {
+  p
+}
 
 # Plot survival to flexion out:
 p <- ggplot() + 
@@ -178,9 +189,13 @@ p <- ggplot() +
   theme_bw()  +
   theme(panel.grid = element_blank())
 
-png(filename = "plots/larval_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
-p
-dev.off()
+if (outfile_plots == T) {
+  png(filename = "plots/larval_survival_vs_temperature.png", width = 10, height = 9, units = "cm", res = 300)
+  print(p)
+  dev.off()
+} else {
+  p
+}
 
 
 ###############################################################
@@ -189,15 +204,15 @@ dev.off()
 # Add encounter rate per hour and per day for 1 prey m^-3 to df:
 # Edit table:
 df <- df %>%
-  mutate(cr = cr_23 * q10_cr^((temperature - 23)/10),                       # Calculate clearance rate
+  mutate(cr = cr_23 * q10_cr^((temperature - 23)/10),                # Calculate clearance rate
     er = metaephyrae_dens *  cr,                                     # Calculate clearance rate
     erd = metaephyrae_dens *  cr * hr,                               # Calculate clearance rate per day
     ierd =  metaephyrae_dens * tthynnus_preflex_dens * cr * hr,      # Instantaneous encounter rate per day for observed prey densities to df
-    dt = (8787.5 * df$temperature^-1.701)/hr,                               # Add development time
+    dt = (8787.5 * df$temperature^-1.701)/hr,                        # Add development time
     egg_surv = exp(-erd * dt),                                       # Egg survival
     egg_death = 1 - egg_surv,                                        # Death
-    yst = dq10 * q10^((tq10 - temperature)/10),                             # Yolk-sack duration
-    pft = log(wf/w0)/(0.0418 * temperature - 0.8355),                       # Pre-flexion duration
+    yst = dq10 * q10^((tq10 - temperature)/10),                      # Yolk-sack duration
+    pft = log(wf/w0)/(0.0418 * temperature - 0.8355),                # Pre-flexion duration
     cumult = dt + yst + pft,                                         # Acumuulated yolk-sack + preflexion + flexion times
     cumul_surv = exp(-erd * cumult),                                 # Survival of the combined development time
     cumul_death = 1 - egg_surv)                                      # Death of the combined development time
@@ -296,41 +311,48 @@ p <- ggplot() +
   
   facet_wrap(~year)
 
-png(filename = "plots/prey_abundance_vs_enconter_rate.png", width = 15, height = 10, units = "cm", res = 400)
-p
-dev.off()
+if (outfile_plots == T) {
+  png(filename = "plots/prey_abundance_vs_enconter_rate.png", width = 15, height = 10, units = "cm", res = 400)
+  print(p)
+  dev.off()
+} else {
+  p
+}
 
 
 # # Plot second x-axis:
-# p <- ggplot() +
-#   geom_point(data = df, aes(y = log10(tthynnus_preflex_dens), x = log10(metaephyrae_dens)), alpha = 0) +
-# 
-#     geom_line(data = df, aes(x = log10(erd), y = (p_survival24_C - 6/8) * 4), color = "red", linetype = "dashed", alpha = 0) +
-#   
-#   scale_y_continuous(breaks = c(1), 
-#                      label = (c("1")),
-#                      sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24?C", breaks = c(0,.5, 1))) +
-#   
-#   scale_x_continuous(breaks = c(-3, -2, -1, -0, 1), 
-#                      label = (c("0.001", "0.01", "0.1", "1", "10"))) +
-#   
-#   annotation_logticks(sides = "b") +
-#   
-#   labs(x = expression(paste(italic("P. noctiluca "), "density (metaephyrae m"^-3*")")), y = expression(paste(italic("T. thynnus "), "density (larvae m"^-3*")"))) +
-#   
-#   theme_bw() +
-#   
-#   theme(axis.title.y.right = element_text(color = "red"),
-#         axis.text.y.right = element_text(color = "red"),
-#         axis.text.x = element_text(angle = 30, vjust = 1, hjust = 0.8),
-#         legend.position = "none",
-#         panel.grid = element_blank()) +
-#   
-#   facet_wrap(~year) 
-# 
-# png(filename = "plots/prey_abundance_vs_metaephyrae_density.png", width = 15, height = 10, units = "cm", res = 400)
-# p
-# dev.off()
+p <- ggplot() +
+  geom_point(data = df, aes(y = log10(tthynnus_preflex_dens), x = log10(metaephyrae_dens)), alpha = 0) +
+
+    geom_line(data = df, aes(x = log10(erd), y = (p_survival24_C - 6/8) * 4), color = "red", linetype = "dashed", alpha = 0) +
+
+  scale_y_continuous(breaks = c(1),
+                     label = (c("1")),
+                     sec.axis = sec_axis(~ .* 1/4 + 6/8, name = "Probability of egg survival at 24?C", breaks = c(0,.5, 1))) +
+
+  scale_x_continuous(breaks = c(-3, -2, -1, -0, 1),
+                     label = (c("0.001", "0.01", "0.1", "1", "10"))) +
+
+  annotation_logticks(sides = "b") +
+
+  labs(x = expression(paste(italic("P. noctiluca "), "density (metaephyrae m"^-3*")")), y = expression(paste(italic("T. thynnus "), "density (larvae m"^-3*")"))) +
+
+  theme_bw() +
+
+  theme(axis.title.y.right = element_text(color = "red"),
+        axis.text.y.right = element_text(color = "red"),
+        axis.text.x = element_text(angle = 30, vjust = 1, hjust = 0.8),
+        legend.position = "none",
+        panel.grid = element_blank()) +
+
+  facet_wrap(~year)
+
+if (fig5_2ndaxis == T) {
+  png(filename = "plots/prey_abundance_vs_metaephyrae_density.png", width = 15, height = 10, units = "cm", res = 400)
+  print(p)
+  dev.off()
+}
+
 
 #           END OF SCRIPT
 #########################################

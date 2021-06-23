@@ -4,7 +4,7 @@
 
 # Author: Daniel Ottmann
 # Created on: February 2021
-# Last update: May 2021
+# Last update: June 2021
 
 ###################################################################################################
 #       Readme
@@ -18,6 +18,10 @@
 ##################################################################
 # Clear environment:
 rm(list = ls())
+
+
+# Plot commands:
+outfile_plots <- F
 
 # Load R libraries
 library(tidyverse)
@@ -137,9 +141,13 @@ p <- ggplot() +
   theme_bw() +
   theme(panel.grid = element_blank())
 
-png(filename = "plots/sampling_sites.png", width = 10, height = 7, units = "cm", res = 400)
-p
-dev.off()
+if (outfile_plots == T) {
+  png(filename = "plots/sampling_sites.png", width = 10, height = 7, units = "cm", res = 400)
+  print(p)
+  dev.off()
+} else {
+  p
+}
 
 
 
@@ -149,8 +157,6 @@ dev.off()
 # Set x, y limits:
 xlim2 <- c(-8, 17.5)
 ylim2 <- c(35, 50)
-
-
 
 p <- ggplot() +
   
@@ -194,9 +200,13 @@ p <- ggplot() +
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-png(filename = "plots/western_mediterranean.png", width = 8, height = 5, units = "cm", res = 600)
-p
-dev.off()
+if (outfile_plots == T) {
+  png(filename = "plots/western_mediterranean.png", width = 8, height = 5, units = "cm", res = 600)
+  print(p)
+  dev.off()
+} else {
+  p
+}
 
 #           END OF SCRIPT
 #####################################
