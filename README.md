@@ -1,4 +1,4 @@
-# Spawning site location of a migratory tuna reduces jellyfish predation on early life stages
+# Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages
 Daniel Ottmann, Øyvind Fiksen, Melisa Martín, Francisco Alemany, Laura Prieto, Diego Álvarez-Berastegui, Patricia Reglero
 
 This repository contains all files needed to run the model and analysis, and generate the figures presented in the paper (Ottmann et al: "Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages").
