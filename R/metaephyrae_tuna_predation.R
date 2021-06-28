@@ -10,7 +10,7 @@
 ###################################################################################################
 #       Readme
 
-# Paper title: Spawning site selection of a migratory tuna reduces jellyfish predation on early life stages
+# Paper title: Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages
 # This script is designed to:
 # 1.- Simulate tuna egg and larval survival to metaephyrae in relation to temperature-dependent development time
 # 2.- Evaluate tuna egg and larval survival based on field data of water temperature and ephyrae and larval densities

@@ -9,7 +9,7 @@
 ###################################################################################################
 #       Readme
 
-# Paper title: Spawning site selection of a migratory tuna reduces jellyfish predation on early life stages
+# Paper title: Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages
 # This script is designed to create the maps used in Figure 1
 
 ###################################################################################################
