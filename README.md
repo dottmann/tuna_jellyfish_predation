@@ -3,7 +3,7 @@
 
 ![alt text](https://github.com/dottmann/tuna_jellyfish_predation/blob/main/media/metaephyrae_tuna.jpg)
 
-This repository contains all files needed to run the model and analysis, and generate the figures presented in the paper (Ottmann et al: "Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages").
+This repository contains all files needed to run the model and analyses and generate the figures presented in the paper (Ottmann et al: "Spawning site distribution of a bluefin tuna reduces jellyfish predation on early life stages").
 
 It has 3 folders containing the source code, data files and figures. The code is written in R by Daniel Ottmann.
 
