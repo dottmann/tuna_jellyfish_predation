@@ -85,7 +85,7 @@ if (outfile_plots == T) {
 hr <- 24
 
 # Clearance rate (Gordoa et al 2013):
-cr_23 <- .00414 # m^3 ind^-1 h^-1 at 23?C
+cr_23 <- .00414 # m^3 ind^-1 h^-1 at 23ºC
 q10_cr <- 2.8 # Hansen Hansen et al 1997
 
 # Set range of temperatures:
@@ -127,11 +127,11 @@ df2 <- df2 %>%
                          rep(10, length(seq(from = min_temperature, to = max_temperature, by = .1))),
                          rep(40, length(seq(from = min_temperature, to = max_temperature, by = .1)))),
          
-         cr = cr_23 * q10_cr^((temperature - 23)/10),                       # Calculate clearance rate
+         cr = cr_23 * q10_cr^((temperature - 23)/10),                # Calculate clearance rate
          er = metaephyrae * cr,                                      # Calculate encounter rate (i.e. volume of water cleared by all metaephyrae within 1 m^3)
-         egg_survival = exp(-er * dt),                               # Calculate egg survival:
-         larval_survival = exp(-er * (yst + pft)),                   # Calculate larval survival:
-         cumul_survival = exp(-er * cumult))                         # Calculate survival to flexion:
+         egg_survival = exp(-er * dt),                               # Calculate egg survival
+         larval_survival = exp(-er * (yst + pft)),                   # Calculate larval survival
+         cumul_survival = exp(-er * cumult))                         # Calculate survival to flexion
 
 
 
